@@ -131,17 +131,65 @@ A persistência é efetuada através do Entity Framework Core, sobre uma base de
 
 ## Interfaces da aplicação
 
-O projeto inclui interfaces para a gestão das principais operações do consultório, nomeadamente:
+As capturas seguintes ilustram as principais funcionalidades da prova de conceito. Todas as imagens estão organizadas na pasta [`docs/screenshots`](docs/screenshots/).
 
-- Dashboard operacional;
-- Gestão de utentes;
-- Gestão de médicos e especialidades;
-- Agendamento e consulta de marcações;
-- Agenda semanal;
-- Horários e indisponibilidades;
-- Atos clínicos e pagamentos.
+### Visão geral e agenda
 
-**Capturas de ecrã:** esta secção pode ser complementada com imagens das interfaces, guardadas numa pasta `docs/imagens/`, quando estiverem selecionadas e preparadas para publicação.
+**Dashboard operacional**
+
+![Dashboard do Consultório Privado](docs/screenshots/01-dashboard.png)
+
+**Agenda semanal**
+
+![Agenda semanal de consultas](docs/screenshots/05-agenda-semanal.png)
+
+### Gestão de utentes, médicos e consultas
+
+**Utentes**
+
+![Gestão de utentes](docs/screenshots/02-utentes.png)
+
+**Médicos — detalhes**
+
+![Detalhes do médico](docs/screenshots/03-medicos-detalhes.png)
+
+**Consultas**
+
+![Gestão de consultas](docs/screenshots/04-consultas.png)
+
+**Detalhes de uma consulta**
+
+![Detalhes da consulta](docs/screenshots/06-consulta-detalhes.png)
+
+### Atos clínicos e pagamentos
+
+**Atos clínicos**
+
+![Gestão de atos clínicos](docs/screenshots/07-atos-clinicos.png)
+
+**Tipos de atos clínicos**
+
+![Tipos de atos clínicos](docs/screenshots/10-tipos-de-atos.png)
+
+**Pagamentos**
+
+![Gestão de pagamentos](docs/screenshots/08-pagamentos.png)
+
+**Detalhes de pagamento**
+
+![Detalhes de pagamento](docs/screenshots/09-pagamento-detalhes.png)
+
+### Disponibilidade médica
+
+**Horários dos médicos**
+
+![Horários dos médicos](docs/screenshots/11-horarios-medicos.png)
+
+**Indisponibilidades dos médicos**
+
+![Indisponibilidades dos médicos](docs/screenshots/12-indisponibilidades.png)
+
+> **Nota:** as imagens destinam-se a ilustrar a aplicação demonstrativa. Confirme que não incluem informação real ou confidencial antes de alterar a visibilidade do repositório.
 
 ## Estado do projeto
 
