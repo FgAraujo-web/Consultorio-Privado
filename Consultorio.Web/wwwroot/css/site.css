@@ -1,0 +1,26 @@
+:root { --navy: #172b4d; --navy-light: #233b61; --accent: #2563eb; --canvas: #f3f6fb; --border: #e3e8f1; }
+body { margin: 0; color: #26354b; background: var(--canvas); font-family: 'Segoe UI', system-ui, sans-serif; }
+.app-shell { display: flex; min-height: 100vh; }
+.app-sidebar { position: sticky; top: 0; width: 258px; min-width: 258px; height: 100vh; background: var(--navy); color: white; display: flex; flex-direction: column; }
+.app-brand { display: flex; align-items: center; gap: 12px; padding: 27px 21px; text-decoration: none; color: white; }
+.app-brand strong { display: block; font-size: 15px; }
+.app-brand small { display: block; font-size: 11px; color: #b8c7df; margin-top: 4px; }
+.brand-symbol { display: grid; place-items: center; border-radius: 10px; background: #3774e6; font-size: 29px; font-weight: 600; width: 40px; height: 40px; flex: 0 0 40px; }
+.sidebar-label { color: #9cb0ce; font-size: 11px; font-weight: 700; letter-spacing: 1.4px; padding: 24px 25px 10px; }
+.app-nav { display: grid; gap: 5px; padding: 0 13px; }
+.app-nav a { color: #dce5f4; text-decoration: none; border-radius: 9px; padding: 12px 15px; font-size: 14px; }
+.app-nav a:hover, .app-nav a:focus-visible { color: white; background: var(--navy-light); }
+.app-nav a.active { background: #3369c9; color: white; font-weight: 600; }
+.sidebar-footer { margin-top: auto; padding: 22px; font-size: 12px; color: #b8c7df; border-top: 1px solid #344765; }
+.app-main { min-width: 0; flex: 1; }
+.app-topbar { min-height: 83px; background: white; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; padding: 18px 35px; }
+.app-topbar strong { font-size: 17px; }
+.topbar-subtitle { font-size: 12px; color: #718096; margin-top: 3px; }
+.demo-label { margin-left: auto; font-size: 11px; font-weight: 700; background: #e9f1ff; color: #2454a2; border-radius: 20px; padding: 7px 12px; }
+.app-content { padding: 30px 35px; }
+.content-panel { background: white; border: 1px solid var(--border); border-radius: 15px; padding: 28px; box-shadow: 0 5px 20px rgba(26, 49, 86, .04); overflow-x: auto; }
+.content-panel h1, .content-panel h2 { color: #1c3050; }
+.content-panel .table { vertical-align: middle; }
+.content-panel .table thead th { background: #f5f8fd; color: #43536c; border-bottom: 1px solid var(--border); }
+.content-panel .btn-primary { background-color: var(--accent); }
+@media (max-width: 991.98px) { .app-sidebar { position: fixed; z-index: 1050; transform: translateX(-100%); transition: transform .2s ease; } .app-sidebar.is-open { transform: translateX(0); } .app-topbar { padding: 15px 20px; } .app-content { padding: 18px; } .content-panel { padding: 18px; } }

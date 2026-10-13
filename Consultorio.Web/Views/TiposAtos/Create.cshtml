@@ -1,0 +1,7 @@
+@model Consultorio.Web.Models.TipoAtoFormViewModel
+@{ ViewData["Title"] = "Novo tipo de ato"; }
+<div class="card border-0 shadow-sm rounded-4"><div class="card-body p-4">
+<h2>Novo tipo de ato clínico</h2><p class="text-muted">Registar um serviço fictício no catálogo.</p>
+<form asp-action="Create" method="post">@Html.AntiForgeryToken()<partial name="_Formulario" model="Model" /></form>
+</div></div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

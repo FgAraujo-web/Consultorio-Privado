@@ -1,0 +1,27 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+
+# .NET
+**/bin/
+**/obj/
+TestResults/
+
+# Configurações locais e credenciais
+**/appsettings.Development.json
+**/appsettings.Local.json
+**/secrets.json
+.env
+.env.*
+
+# Bases de dados e cópias de segurança
+*.mdf
+*.ldf
+*.bak
+*.bacpac
+
+# Ficheiros temporários
+*.log
+*.tmp

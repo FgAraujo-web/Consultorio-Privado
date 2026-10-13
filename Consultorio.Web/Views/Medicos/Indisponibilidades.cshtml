@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Consultorio.Domain.Entities.IndisponibilidadeMedico>
+
+@{
+    ViewData["Title"] = "Indisponibilidades do médico";
+    var medico = (Consultorio.Domain.Entities.Medico)ViewBag.Medico;
+}
+
+<h2>Indisponibilidades do médico</h2>
+
+@if (TempData["MensagemSucesso"] is string mensagem)
+{
+    <div class="alert alert-success alert-dismissible fade show"
+         role="alert">
+        @mensagem
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Fechar"></button>
+    </div>
+}
+
+<p><strong>Médico:</strong> @medico.Nome</p>
+
+<div class="d-flex gap-2 mb-3">
+    <a asp-action="CriarIndisponibilidade"
+       asp-route-id="@medico.MedicoId"
+       class="btn btn-primary">
+        Adicionar indisponibilidade
+    </a>
+
+    <a asp-action="Details"
+       asp-route-id="@medico.MedicoId"
+       class="btn btn-secondary">
+        Voltar ao médico
+    </a>
+</div>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Início</th>
+            <th>Fim</th>
+            <th>Motivo</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.DataHoraInicio.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@item.DataHoraFim.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@(string.IsNullOrWhiteSpace(item.Motivo) ? "—" : item.Motivo)</td>
+                <td>
+                    <form asp-action="RemoverIndisponibilidade"
+                          method="post"
+                          onsubmit="return confirm('Remover esta indisponibilidade?');">
+
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden"
+                               name="id"
+                               value="@item.IndisponibilidadeMedicoId" />
+
+                        <input type="hidden"
+                               name="medicoId"
+                               value="@medico.MedicoId" />
+
+                        <button type="submit"
+                                class="btn btn-sm btn-outline-danger">
+                            Remover
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Este médico ainda não tem indisponibilidades registadas.
+    </div>
+}

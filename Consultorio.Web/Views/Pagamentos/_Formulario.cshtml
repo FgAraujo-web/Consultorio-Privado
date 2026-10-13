@@ -1,0 +1,38 @@
+@model Consultorio.Web.Models.PagamentoFormViewModel
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<input type="hidden" asp-for="PagamentoId" />
+<div class="row g-3">
+    <div class="col-md-12">
+        <label asp-for="ConsultaId" class="form-label"></label>
+        <select asp-for="ConsultaId" asp-items="ViewBag.Consultas" class="form-select">
+            <option value="0">— Selecione uma consulta —</option>
+        </select>
+        <span asp-validation-for="ConsultaId" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Valor" class="form-label"></label>
+        <input asp-for="Valor" type="number" min="0.01" step="0.01" class="form-control" />
+        <span asp-validation-for="Valor" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="DataPagamento" class="form-label"></label>
+        <input asp-for="DataPagamento" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}" class="form-control" />
+        <span asp-validation-for="DataPagamento" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Metodo" class="form-label"></label>
+        <select asp-for="Metodo" class="form-select">
+            <option value="Cartao">Cartão</option>
+            <option value="Numerario">Numerário</option>
+            <option value="Transferencia">Transferência</option>
+            <option value="MBWay">MB WAY</option>
+            <option value="Outro">Outro</option>
+        </select>
+        <span asp-validation-for="Metodo" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="ReferenciaFicticia" class="form-label"></label>
+        <input asp-for="ReferenciaFicticia" class="form-control" placeholder="Ex.: PAG-DEMO-1501" />
+        <span asp-validation-for="ReferenciaFicticia" class="text-danger"></span>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+@model Consultorio.Web.Models.TipoAtoFormViewModel
+@{ ViewData["Title"] = "Editar tipo de ato"; }
+<div class="card border-0 shadow-sm rounded-4"><div class="card-body p-4">
+<h2>Editar tipo de ato clínico</h2><p class="text-muted">Tipo de ato #@Model.TipoAtoId</p>
+<form asp-action="Edit" asp-route-id="@Model.TipoAtoId" method="post">@Html.AntiForgeryToken()<input type="hidden" asp-for="TipoAtoId" /><partial name="_Formulario" model="Model" /></form>
+</div></div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

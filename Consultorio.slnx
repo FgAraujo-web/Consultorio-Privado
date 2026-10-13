@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Consultorio.Application/Consultorio.Application.csproj" />
+  <Project Path="Consultorio.Domain/Consultorio.Domain.csproj" />
+  <Project Path="Consultorio.Infrastructure/Consultorio.Infrastructure.csproj" />
+  <Project Path="Consultorio.Web/Consultorio.Web.csproj" />
+</Solution>

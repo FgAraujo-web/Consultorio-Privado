@@ -1,0 +1,14 @@
+@model Consultorio.Web.Models.PagamentoFormViewModel
+@{ ViewData["Title"] = "Registar pagamento"; }
+<h2>Registar pagamento</h2>
+<p class="text-muted">Novo pagamento fictício associado a uma consulta.</p>
+<div class="card border-0 shadow-sm"><div class="card-body p-4">
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+    <partial name="_Formulario" model="Model" />
+    <div class="mt-4 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Guardar pagamento</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+    </div>
+</form>
+</div></div>

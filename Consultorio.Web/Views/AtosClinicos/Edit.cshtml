@@ -1,0 +1,11 @@
+@model Consultorio.Web.Models.AtoClinicoFormViewModel
+@{ ViewData["Title"] = "Editar ato clínico"; }
+<h2>Editar ato clínico #@Model.AtoId</h2>
+<p class="text-muted">Alteração de um registo fictício.</p>
+<div class="card border-0 shadow-sm"><div class="card-body p-4">
+<form asp-action="Edit" asp-route-id="@Model.AtoId" method="post">
+    @Html.AntiForgeryToken()
+    <partial name="_Formulario" model="Model" />
+</form>
+</div></div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

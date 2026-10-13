@@ -1,0 +1,80 @@
+﻿@model Consultorio.Web.Models.HorarioMedicoFormViewModel
+
+@{
+    ViewData["Title"] = "Adicionar horário";
+}
+
+<h2>Adicionar horário de atendimento</h2>
+
+<p>
+    <strong>Médico:</strong> @ViewBag.NomeMedico
+</p>
+
+<form asp-action="CriarHorario" method="post">
+    @Html.AntiForgeryToken()
+
+    <input asp-for="MedicoId" type="hidden" />
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger mb-3"></div>
+
+    <div class="mb-3">
+        <label asp-for="DiaSemana" class="form-label">
+            Dia da semana
+        </label>
+
+        <select asp-for="DiaSemana" class="form-select">
+            <option value="">Selecione...</option>
+            <option value="1">Segunda-feira</option>
+            <option value="2">Terça-feira</option>
+            <option value="3">Quarta-feira</option>
+            <option value="4">Quinta-feira</option>
+            <option value="5">Sexta-feira</option>
+            <option value="6">Sábado</option>
+            <option value="0">Domingo</option>
+        </select>
+
+        <span asp-validation-for="DiaSemana"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="HoraInicio" class="form-label">
+            Hora de início
+        </label>
+
+        <input asp-for="HoraInicio"
+               type="time"
+               class="form-control" />
+
+        <span asp-validation-for="HoraInicio"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="HoraFim" class="form-label">
+            Hora de fim
+        </label>
+
+        <input asp-for="HoraFim"
+               type="time"
+               class="form-control" />
+
+        <span asp-validation-for="HoraFim"
+              class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Guardar horário
+    </button>
+
+    <a asp-action="Horarios"
+       asp-route-id="@Model.MedicoId"
+       class="btn btn-secondary">
+        Cancelar
+    </a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

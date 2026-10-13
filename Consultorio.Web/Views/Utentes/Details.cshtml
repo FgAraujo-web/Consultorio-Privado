@@ -1,0 +1,83 @@
+@model Consultorio.Domain.Entities.Utente
+@{
+    ViewData["Title"] = "Detalhes do utente";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="mb-1">Detalhes do utente</h2>
+        <p class="text-muted mb-0">Informação de um utente fictício do consultório.</p>
+    </div>
+
+    <div class="d-flex gap-2">
+
+        <a asp-controller="Utentes"
+           asp-action="Edit"
+           asp-route-id="@Model.UtenteId"
+           class="btn btn-primary">
+            Editar utente
+        </a>
+
+        <form asp-controller="Utentes"
+              asp-action="AlterarEstado"
+              asp-route-id="@Model.UtenteId"
+              method="post"
+              onsubmit="return confirm('Tem a certeza de que pretende alterar o estado deste utente?');">
+
+            @Html.AntiForgeryToken()
+
+            @if (Model.Ativo)
+            {
+                <button type="submit" class="btn btn-outline-danger">
+                    Desativar utente
+                </button>
+            }
+            else
+            {
+                <button type="submit" class="btn btn-outline-success">
+                    Reativar utente
+                </button>
+            }
+
+        </form>
+
+    </div>
+
+</div>
+
+@if (TempData["MensagemSucesso"] is string mensagem)
+{
+    <div class="alert alert-success" role="alert">@mensagem</div>
+}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <dl class="row mb-0">
+            <dt class="col-sm-4 mb-2">Código</dt>
+            <dd class="col-sm-8 mb-2">@Model.Codigo</dd>
+            <dt class="col-sm-4 mb-2">Nome</dt>
+            <dd class="col-sm-8 mb-2">@Model.Nome</dd>
+            <dt class="col-sm-4 mb-2">Data de nascimento</dt>
+            <dd class="col-sm-8 mb-2">@Model.DataNascimento.ToString("dd/MM/yyyy")</dd>
+            <dt class="col-sm-4 mb-2">Telefone</dt>
+            <dd class="col-sm-8 mb-2">@(Model.Telefone ?? "—")</dd>
+            <dt class="col-sm-4 mb-2">Email</dt>
+            <dd class="col-sm-8 mb-2">@(Model.Email ?? "—")</dd>
+            <dt class="col-sm-4 mb-2">Localidade</dt>
+            <dd class="col-sm-8 mb-2">@(Model.Localidade ?? "—")</dd>
+            <dt class="col-sm-4 mb-2">Estado</dt>
+            <dd class="col-sm-8 mb-2">
+                @if (Model.Ativo)
+                {
+                    <span class="badge bg-success">Ativo</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">Inativo</span>
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<a asp-controller="Utentes" asp-action="Index" class="btn btn-outline-secondary mt-3">Voltar à lista</a>

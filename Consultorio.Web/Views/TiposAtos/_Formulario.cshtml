@@ -1,0 +1,9 @@
+@model Consultorio.Web.Models.TipoAtoFormViewModel
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<div class="row g-3">
+    <div class="col-md-4"><label asp-for="Codigo" class="form-label"></label><input asp-for="Codigo" class="form-control" maxlength="30" /><span asp-validation-for="Codigo" class="text-danger"></span></div>
+    <div class="col-md-8"><label asp-for="Designacao" class="form-label"></label><input asp-for="Designacao" class="form-control" maxlength="150" /><span asp-validation-for="Designacao" class="text-danger"></span></div>
+    <div class="col-md-4"><label asp-for="PrecoBase" class="form-label"></label><input asp-for="PrecoBase" type="number" step="0.01" min="0" class="form-control" /><span asp-validation-for="PrecoBase" class="text-danger"></span><div class="form-text">Preço indicativo para novos atos. Não altera valores já registados.</div></div>
+    <div class="col-md-8 d-flex align-items-center"><div class="form-check mt-3"><input asp-for="Ativo" class="form-check-input" /><label asp-for="Ativo" class="form-check-label"></label></div></div>
+</div>
+<div class="d-flex gap-2 mt-4"><button type="submit" class="btn btn-primary">Guardar</button><a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a></div>

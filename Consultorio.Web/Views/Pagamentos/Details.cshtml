@@ -1,0 +1,21 @@
+@model Consultorio.Domain.Entities.Pagamento
+@using System.Globalization
+@{ ViewData["Title"] = "Detalhes do pagamento"; var pt = CultureInfo.GetCultureInfo("pt-PT"); }
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div><h2 class="mb-1">Detalhes do pagamento</h2><p class="text-muted mb-0">Pagamento fictício #@Model.PagamentoId</p></div>
+    <a asp-action="Edit" asp-route-id="@Model.PagamentoId" class="btn btn-primary">Editar pagamento</a>
+</div>
+@if (TempData["MensagemSucesso"] is string mensagem)
+{ <div class="alert alert-success" role="alert">@mensagem</div> }
+<div class="card border-0 shadow-sm"><div class="card-body p-4">
+    <dl class="row mb-0">
+        <dt class="col-sm-4 mb-2">Consulta</dt><dd class="col-sm-8 mb-2"><a asp-controller="Consultas" asp-action="Details" asp-route-id="@Model.ConsultaId">#@Model.ConsultaId</a></dd>
+        <dt class="col-sm-4 mb-2">Utente</dt><dd class="col-sm-8 mb-2">@(Model.Consulta?.Utente?.Nome ?? "—")</dd>
+        <dt class="col-sm-4 mb-2">Médico</dt><dd class="col-sm-8 mb-2">@(Model.Consulta?.Medico?.Nome ?? "—")</dd>
+        <dt class="col-sm-4 mb-2">Data do pagamento</dt><dd class="col-sm-8 mb-2">@Model.DataPagamento.ToString("dd/MM/yyyy HH:mm")</dd>
+        <dt class="col-sm-4 mb-2">Método</dt><dd class="col-sm-8 mb-2">@Model.Metodo</dd>
+        <dt class="col-sm-4 mb-2">Referência fictícia</dt><dd class="col-sm-8 mb-2">@Model.ReferenciaFicticia</dd>
+        <dt class="col-sm-4 mb-2">Valor</dt><dd class="col-sm-8 mb-2">@Model.Valor.ToString("C", pt)</dd>
+    </dl>
+</div></div>
+<a asp-action="Index" class="btn btn-outline-secondary mt-3">Voltar à lista</a>

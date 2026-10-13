@@ -1,0 +1,28 @@
+@model Consultorio.Web.Models.MedicoFormViewModel
+
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<div class="row g-3">
+    <div class="col-md-8">
+        <label asp-for="Nome" class="form-label"></label>
+        <input asp-for="Nome" class="form-control" />
+        <span asp-validation-for="Nome" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="CedulaFicticia" class="form-label"></label>
+        <input asp-for="CedulaFicticia" class="form-control" />
+        <span asp-validation-for="CedulaFicticia" class="text-danger"></span>
+    </div>
+    <div class="col-md-8">
+        <label asp-for="EspecialidadeId" class="form-label"></label>
+        <select asp-for="EspecialidadeId" asp-items="ViewBag.Especialidades" class="form-select">
+            <option value="0">— Selecione uma especialidade —</option>
+        </select>
+        <span asp-validation-for="EspecialidadeId" class="text-danger"></span>
+    </div>
+    <div class="col-md-4 d-flex align-items-end">
+        <div class="form-check mb-2">
+            <input asp-for="Ativo" class="form-check-input" />
+            <label asp-for="Ativo" class="form-check-label">Médico ativo</label>
+        </div>
+    </div>
+</div>

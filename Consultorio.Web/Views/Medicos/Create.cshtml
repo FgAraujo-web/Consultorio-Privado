@@ -1,0 +1,20 @@
+@model Consultorio.Web.Models.MedicoFormViewModel
+@{ ViewData["Title"] = "Novo médico"; }
+
+<h2>Novo médico</h2>
+<p class="text-muted">Dados exclusivamente fictícios para demonstração.</p>
+<div class="card border-0 shadow-sm"><div class="card-body p-4">
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+    
+    <partial name="_Formulario" model="Model" />
+    <div class="d-flex gap-2 mt-4">
+        <button type="submit" class="btn btn-primary">Guardar médico</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+    </div>
+</form>
+</div></div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,202 @@
+﻿@using System.Globalization
+
+@{
+    ViewData["Title"] = "Dashboard";
+
+    var pt = CultureInfo.GetCultureInfo("pt-PT");
+}
+
+<h2>Dashboard</h2>
+<p class="text-muted mb-4">
+    Visão geral da atividade do consultório
+</p>
+
+<div class="row g-3 mb-4">
+
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <p class="text-muted">Utentes</p>
+                <h2>@ViewBag.TotalUtentes</h2>
+                <a asp-controller="Utentes"
+                   asp-action="Index">
+                    Ver utentes →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <p class="text-muted">Médicos</p>
+                <h2>@ViewBag.TotalMedicos</h2>
+                <a asp-controller="Medicos"
+                   asp-action="Index">
+                    Ver médicos →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <p class="text-muted">Consultas</p>
+                <h2>@ViewBag.TotalConsultas</h2>
+                <a asp-controller="Consultas"
+                   asp-action="Index">
+                    Ver consultas →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <p class="text-muted">Pagamentos</p>
+                <h2>@ViewBag.TotalPagamentos</h2>
+                <a asp-controller="Pagamentos"
+                   asp-action="Index">
+                    Ver pagamentos →
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row g-3 mb-4">
+
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <p class="text-muted">Atos clínicos</p>
+                <h2>@ViewBag.TotalAtosClinicos</h2>
+                <a asp-controller="AtosClinicos"
+                   asp-action="Index">
+                    Ver atos clínicos →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <p class="text-muted">
+                    Valor total dos pagamentos
+                </p>
+                <h2>
+                    @(((decimal)ViewBag.ValorRecebido)
+                        .ToString("C", pt))
+                </h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row g-3 mb-4">
+
+    <div class="col-lg-5">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <h5>Consultas por estado</h5>
+
+                <div style="position:relative;max-width:340px;height:280px;margin:20px auto;">
+                    <canvas id="graficoConsultas" aria-label="Distribuição das consultas por estado" role="img"></canvas>
+                </div>
+                <p class="text-center text-muted small mb-0">
+                    Distribuição das consultas por estado
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <h5>Próximas consultas agendadas</h5>
+
+                <div class="table-responsive mt-3">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Data e hora</th>
+                                <th>Utente</th>
+                                <th>Médico</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (
+                                var item in ViewBag.ProximasConsultas)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.DataHora.ToString(
+                                            "dd/MM/yyyy HH:mm")
+                                    </td>
+                                    <td>@item.Utente</td>
+                                    <td>@item.Medico</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                @if (ViewBag.ProximasConsultas.Count == 0)
+                {
+                    <p class="text-muted">
+                        Não existem consultas futuras
+                        agendadas.
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        const consultasPorEstado = @Html.Raw(
+            System.Text.Json.JsonSerializer.Serialize(ViewBag.ConsultasPorEstado)
+        );
+
+        const canvas = document.getElementById('graficoConsultas');
+        if (canvas && typeof Chart !== 'undefined') {
+            new Chart(canvas, {
+                type: 'doughnut',
+                data: {
+                    labels: consultasPorEstado.map(x => x.Estado),
+                    datasets: [{
+                        data: consultasPorEstado.map(x => x.Total),
+                        backgroundColor: ['#2563eb', '#0d9488', '#d97706', '#64748b'],
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: { position: 'bottom', labels: { padding: 15, usePointStyle: true } },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const valor = context.parsed;
+                                    const percentagem = total > 0 ? (valor / total * 100).toFixed(1) : '0';
+                                    return ` ${valor} consultas (${percentagem}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+}

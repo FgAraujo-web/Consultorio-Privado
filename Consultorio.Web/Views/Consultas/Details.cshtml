@@ -1,0 +1,37 @@
+@model Consultorio.Domain.Entities.Consulta
+@{ ViewData["Title"] = "Detalhes da consulta"; }
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div><h2 class="mb-1">Detalhes da consulta</h2><p class="text-muted mb-0">Consulta fictícia #@Model.ConsultaId</p></div>
+    @if (Model.Estado == "Agendada")
+    {
+        <a asp-action="Edit" asp-route-id="@Model.ConsultaId" class="btn btn-primary">Editar consulta</a>
+    }
+</div>
+@if (TempData["MensagemSucesso"] is string sucesso) { <div class="alert alert-success">@sucesso</div> }
+@if (TempData["MensagemErro"] is string erro) { <div class="alert alert-warning">@erro</div> }
+<div class="card border-0 shadow-sm"><div class="card-body p-4">
+<dl class="row mb-0">
+    <dt class="col-sm-4 mb-2">Utente</dt><dd class="col-sm-8 mb-2">@(Model.Utente?.Nome ?? "—")</dd>
+    <dt class="col-sm-4 mb-2">Médico</dt><dd class="col-sm-8 mb-2">@(Model.Medico?.Nome ?? "—")</dd>
+    <dt class="col-sm-4 mb-2">Data e hora</dt><dd class="col-sm-8 mb-2">@Model.DataHora.ToString("dd/MM/yyyy HH:mm")</dd>
+    <dt class="col-sm-4 mb-2">Duração</dt><dd class="col-sm-8 mb-2">@Model.DuracaoMinutos minutos (até @Model.DataHora.AddMinutes(Model.DuracaoMinutos).ToString("HH:mm"))</dd>
+    <dt class="col-sm-4 mb-2">Estado</dt><dd class="col-sm-8 mb-2">@Model.Estado</dd>
+    <dt class="col-sm-4 mb-2">Observações</dt><dd class="col-sm-8 mb-2">@(string.IsNullOrWhiteSpace(Model.Observacoes) ? "—" : Model.Observacoes)</dd>
+</dl>
+@if (Model.Estado == "Agendada")
+{
+    <div class="d-flex gap-2 mt-4">
+        <form asp-action="AlterarEstado" asp-route-id="@Model.ConsultaId" method="post" onsubmit="return confirm('Marcar esta consulta como realizada?');">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="novoEstado" value="Realizada" />
+            <button type="submit" class="btn btn-outline-success">Marcar como realizada</button>
+        </form>
+        <form asp-action="AlterarEstado" asp-route-id="@Model.ConsultaId" method="post" onsubmit="return confirm('Cancelar esta consulta?');">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="novoEstado" value="Cancelada" />
+            <button type="submit" class="btn btn-outline-danger">Cancelar consulta</button>
+        </form>
+    </div>
+}
+</div></div>
+<a asp-action="Index" class="btn btn-outline-secondary mt-3">Voltar à lista</a>

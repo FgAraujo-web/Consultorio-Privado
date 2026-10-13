@@ -1,0 +1,110 @@
+@model Consultorio.Web.Models.AgendaSemanalViewModel
+@using System.Globalization
+@{
+    ViewData["Title"] = "Agenda médica";
+    var pt = CultureInfo.GetCultureInfo("pt-PT");
+    var inicio = Model.InicioSemana;
+    var fim = inicio.AddDays(6);
+    var anterior = inicio.AddDays(-7).ToString("yyyy-MM-dd");
+    var seguinte = inicio.AddDays(7).ToString("yyyy-MM-dd");
+    var hoje = DateTime.Today.ToString("yyyy-MM-dd");
+}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <div>
+        <h1 class="mb-1">Agenda médica</h1>
+        <p class="text-muted mb-0">Consultas por dia e por médico · dados fictícios</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="Index" class="btn btn-outline-secondary">Ver listagem</a>
+        <a asp-action="Create" class="btn btn-primary">+ Agendar consulta</a>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-3">
+    <div class="card-body">
+        <form asp-action="Agenda" method="get" class="row g-3 align-items-end">
+            <div class="col-12 col-md-5">
+                <label for="medicoId" class="form-label">Médico</label>
+                <select id="medicoId" name="medicoId" class="form-select">
+                    <option value="">Todos os médicos</option>
+                    @foreach (var medico in Model.Medicos)
+                    {
+                        if (Model.MedicoId?.ToString() == medico.Value)
+                        {
+                            <option value="@medico.Value" selected>@medico.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@medico.Value">@medico.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-12 col-md-4">
+                <label for="semana" class="form-label">Data de referência</label>
+                <input id="semana" name="semana" type="date" class="form-control" value="@inicio.ToString("yyyy-MM-dd")" />
+            </div>
+            <div class="col-12 col-md-3">
+                <button type="submit" class="btn btn-primary w-100">Aplicar filtros</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <a asp-action="Agenda" asp-route-semana="@anterior" asp-route-medicoId="@Model.MedicoId" class="btn btn-outline-secondary">← Semana anterior</a>
+    <div class="text-center">
+        <div class="fw-semibold">@inicio.ToString("dd MMM", pt) – @fim.ToString("dd MMM yyyy", pt)</div>
+        <div class="small text-muted">@Model.Consultas.Count consulta(s) nesta semana</div>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="Agenda" asp-route-semana="@hoje" asp-route-medicoId="@Model.MedicoId" class="btn btn-outline-secondary">Hoje</a>
+        <a asp-action="Agenda" asp-route-semana="@seguinte" asp-route-medicoId="@Model.MedicoId" class="btn btn-outline-secondary">Semana seguinte →</a>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-3 mb-4">
+    @for (var diaIndex = 0; diaIndex < 7; diaIndex++)
+    {
+        var dia = inicio.AddDays(diaIndex);
+        var consultasDia = Model.Consultas.Where(c => c.DataHora.Date == dia.Date).ToList();
+        <div class="col">
+            <div class="card h-100 shadow-sm @(dia.Date == DateTime.Today ? "border-primary" : "")">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span class="fw-semibold text-capitalize">@dia.ToString("dddd", pt)</span>
+                    <span class="badge bg-secondary">@dia.ToString("dd/MM")</span>
+                </div>
+                <div class="card-body p-2">
+                    @if (consultasDia.Count == 0)
+                    {
+                        <p class="text-muted small mb-0 p-2">Sem consultas.</p>
+                    }
+                    else
+                    {
+                        @foreach (var consulta in consultasDia)
+                        {
+                            var estadoClasse = consulta.Estado switch
+                            {
+                                "Agendada" => "bg-primary",
+                                "Realizada" => "bg-success",
+                                "Cancelada" => "bg-secondary",
+                                _ => "bg-warning text-dark"
+                            };
+                            <div class="border rounded p-2 mb-2">
+                                <div class="d-flex justify-content-between gap-2 align-items-start mb-1">
+                                    <strong>@consulta.DataHora.ToString("HH:mm")–@consulta.DataHora.AddMinutes(consulta.DuracaoMinutos).ToString("HH:mm")</strong>
+                                    <span class="badge @estadoClasse">@consulta.Estado</span>
+                                </div>
+                                <div class="small fw-semibold">@(consulta.Utente?.Nome ?? "Utente não disponível")</div>
+                                <div class="small text-muted">@(consulta.Medico?.Nome ?? "Médico não disponível")</div>
+                                <a asp-action="Details" asp-route-id="@consulta.ConsultaId" class="small">Ver consulta #@consulta.ConsultaId</a>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<p class="text-muted small">A agenda apresenta o intervalo de cada consulta. Novas marcações e edições são verificadas quanto a sobreposições de horário para o mesmo médico.</p>

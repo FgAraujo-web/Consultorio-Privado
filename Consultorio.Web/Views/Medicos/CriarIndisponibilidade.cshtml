@@ -1,0 +1,65 @@
+﻿@model Consultorio.Web.Models.IndisponibilidadeMedicoFormViewModel
+
+@{
+    ViewData["Title"] = "Adicionar indisponibilidade";
+}
+
+<h2>Adicionar indisponibilidade</h2>
+
+<p><strong>Médico:</strong> @ViewBag.NomeMedico</p>
+
+<form asp-action="CriarIndisponibilidade" method="post">
+    @Html.AntiForgeryToken()
+
+    <input asp-for="MedicoId" type="hidden" />
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger mb-3"></div>
+
+    <div class="mb-3">
+        <label asp-for="DataHoraInicio" class="form-label"></label>
+        <input asp-for="DataHoraInicio"
+               type="datetime-local"
+               class="form-control"
+               asp-format="{0:yyyy-MM-ddTHH:mm}" />
+        <span asp-validation-for="DataHoraInicio"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DataHoraFim" class="form-label"></label>
+        <input asp-for="DataHoraFim"
+               type="datetime-local"
+               class="form-control"
+               asp-format="{0:yyyy-MM-ddTHH:mm}" />
+        <span asp-validation-for="DataHoraFim"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Motivo" class="form-label"></label>
+        <textarea asp-for="Motivo"
+                  class="form-control"
+                  rows="3"
+                  maxlength="250"
+                  placeholder="Ex.: Férias, formação, ausência..."></textarea>
+        <span asp-validation-for="Motivo"
+              class="text-danger"></span>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">
+            Guardar indisponibilidade
+        </button>
+
+        <a asp-action="Indisponibilidades"
+           asp-route-id="@Model.MedicoId"
+           class="btn btn-secondary">
+            Cancelar
+        </a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

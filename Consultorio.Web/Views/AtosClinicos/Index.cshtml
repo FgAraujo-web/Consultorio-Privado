@@ -1,0 +1,39 @@
+@model IEnumerable<Consultorio.Domain.Entities.AtoClinico>
+@using System.Globalization
+@{ ViewData["Title"] = "Atos clínicos"; var pt = CultureInfo.GetCultureInfo("pt-PT"); }
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <h1 class="mb-0">Atos clínicos</h1>
+    <a asp-action="Create" class="btn btn-primary">+ Registar ato clínico</a>
+</div>
+<p class="text-muted">Dados inteiramente fictícios · 25 registos por página</p>
+<form method="get" class="d-flex gap-2 mb-3">
+    <input name="q" value="@ViewBag.Query" class="form-control" placeholder="Pesquisar por utente, código do tipo de ato ou descrição" />
+    <button class="btn btn-primary">Pesquisar</button>
+</form>
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+    <thead><tr><th>Consulta</th><th>Utente</th><th>Tipo de ato</th><th>Data e hora</th><th class="text-end">Valor</th><th>Estado</th><th></th></tr></thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>#@item.ConsultaId</td>
+            <td>@(item.Consulta?.Utente?.Nome ?? "—")</td>
+            <td>@(item.TipoAto?.Codigo ?? "—")</td>
+            <td>@item.DataAto.ToString("dd/MM/yyyy HH:mm")</td>
+            <td class="text-end">@item.Valor.ToString("C", pt)</td>
+            <td>@if(item.Anulado){<span class="badge bg-secondary">Anulado</span>}else{<span class="badge bg-success">Válido</span>}</td>
+            <td><a asp-action="Details" asp-route-id="@item.AtoId">Ver</a></td>
+        </tr>
+    }
+    </tbody>
+</table>
+</div>
+<nav class="d-flex gap-2">
+    <a class="btn btn-outline-secondary" asp-route-page="@Math.Max(1, (int)ViewBag.Page - 1)" asp-route-q="@ViewBag.Query">Anterior</a>
+    <span class="align-self-center">Página @ViewBag.Page</span>
+    @if ((bool)ViewBag.HasNext)
+    {
+        <a class="btn btn-outline-secondary" asp-route-page="@((int)ViewBag.Page + 1)" asp-route-q="@ViewBag.Query">Seguinte</a>
+    }
+</nav>
