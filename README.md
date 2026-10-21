@@ -2,7 +2,7 @@
 
 **Aplicação web de demonstração para a gestão operacional de um consultório médico**, desenvolvida em **ASP.NET Core MVC (.NET 10)**, com **Entity Framework Core**, **SQL Server** e **Bootstrap**.
 
-O projeto constitui uma prova de conceito de desenvolvimento de sistemas de informação, abrangendo modelação de dados, organização da lógica de negócio, persistência de informação e implementação de interfaces web.
+O repositório documenta duas provas de conceito complementares: o **desenvolvimento de uma aplicação de gestão** e a sua **auditoria técnico-funcional independente**, com análise de requisitos, arquitetura, dados, segurança e qualidade da solução.
 
 > **Nota:** os dados utilizados nesta demonstração são fictícios. A aplicação não se destina a utilização clínica em produção sem validações e medidas adicionais de segurança, privacidade e conformidade.
 
@@ -32,7 +32,7 @@ O projeto constitui uma prova de conceito de desenvolvimento de sistemas de info
 
 O agendamento de consultas contempla validações relacionadas com a **duração da consulta**, a **sobreposição de marcações**, o **horário semanal do médico** e as **indisponibilidades registadas**.
 
-Estas validações procuram assegurar a coerência do agendamento e reduzir conflitos na utilização dos períodos disponíveis.
+Estas validações procuram assegurar a coerência do agendamento e reduzir conflitos na utilização dos períodos disponíveis. A auditoria posterior identificou, contudo, um cenário em que é possível registar uma consulta para um médico sem horário configurado; ver a secção de auditoria.
 
 ## Tecnologias utilizadas
 
@@ -191,9 +191,37 @@ As capturas seguintes ilustram as principais funcionalidades da prova de conceit
 
 > **Nota:** as imagens destinam-se a ilustrar a aplicação demonstrativa. Confirme que não incluem informação real ou confidencial antes de alterar a visibilidade do repositório.
 
+## Auditoria técnico-funcional — segunda prova de conceito
+
+Após o desenvolvimento da aplicação, foi realizada uma **avaliação crítica da própria solução**, assumindo a perspetiva de consultoria técnico-funcional. O objetivo foi identificar e fundamentar riscos, avaliar regras de negócio, reconhecer boas práticas e formular recomendações — **sem modificar ou corrigir o código durante a auditoria**.
+
+A análise combinou:
+
+- **Ferramentas automáticas:** compilação e analisadores .NET, avisos de dependências NuGet e verificação da configuração;
+- **Inspeção manual:** controladores, acesso a dados, validações, tratamento de exceções, autenticação e proteção antifalsificação;
+- **Teste funcional:** reprodução de um cenário de agendamento de consulta para um médico sem horário configurado;
+- **Avaliação técnico-funcional:** classificação de constatações, impacto, criticidade e recomendações.
+
+### Principais resultados
+
+| Área | Resultado da auditoria |
+| --- | --- |
+| **Regras de negócio** | Reproduzido um agendamento sem horário médico configurado (TF-001). |
+| **Segurança aplicacional** | Não foram identificados mecanismos de autenticação e autorização na aplicação analisada. |
+| **Dependências** | Identificados dois avisos de segurança relativos à dependência transitiva `System.Security.Cryptography.Pkcs` 9.0.11; a explorabilidade não foi demonstrada. |
+| **Qualidade e manutenção** | Identificados avisos dos analisadores .NET e tratamento genérico de exceções de persistência em quatro controladores. |
+| **Tratamento de erros** | Configurado `/Home/Error` sem implementação correspondente identificada na análise estática. |
+| **Proteção CSRF** | Verificados atributos antifalsificação nas 21 ações POST explicitamente identificadas. |
+
+O relatório distingue **falhas reproduzidas**, **constatações fundamentadas por análise estática**, **riscos condicionados pelas regras de negócio** e **boas práticas identificadas**. Os comandos e resultados relevantes encontram-se documentados como evidências técnicas.
+
+**Documentação:** [Relatório e evidências da auditoria](docs/Auditoria/).
+
+> **Âmbito:** trata-se de uma prova de conceito com dados fictícios, não de uma certificação de segurança, auditoria de conformidade ou aprovação para utilização clínica em produção. As recomendações não representam alterações já implementadas.
+
 ## Estado do projeto
 
-**Prova de conceito funcional.** Os módulos principais e as validações de agendamento foram implementados. A execução de testes integrados finais e o reforço de requisitos próprios de um ambiente de produção constituem etapas futuras.
+**POC de desenvolvimento concluída para demonstração e POC de auditoria técnico-funcional documentada.** A aplicação inclui os módulos operacionais principais, mas a auditoria identificou limitações que devem ser avaliadas antes de qualquer utilização em produção. A implementação das recomendações e os testes de regressão ficam fora do âmbito desta auditoria.
 
 ### Possíveis evoluções
 
